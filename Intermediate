@@ -1,0 +1,57 @@
+# This section will cover JOINs, subqueries, conditional expressions, and set operations
+
+# JOINs
+
+# A company stores employee data in one table and department data in another table. 
+# The HR team wants a report showing each employees first name, last name, and department name 
+# Before working with multiple tables, it's important to understand primary keys and foreign keys. These keys define relationships between tables and help ensure data integrity.
+
+# A primary key is a unique identifier for each row in a table. It ensures that each record is distinct and can be referenced by other tables.
+
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    department_id INT,
+    salary DECIMAL(10,2)
+);
+
+# A foreign key is a column in one table that refers to the primary key in another table. It establishes a relationship between tables.
+
+CREATE TABLE departments (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(50)
+);
+
+
+# Study those two tables closely - Note their primaries keys, but now also note what column they both share. 
+
+# In the employees table, department_id is a foreign key that links to the department_id in the departments table.
+
+# lets go back to the original question 
+# The HR team wants a report showing each employees first name, last name, and department name 
+
+## To solve this out, I would typically walk my way backwards 
+
+# what do i know for sure -- I need to JOIN both tables using the departments column 
+
+JOIN departments ON employees.deparments_id = departments.departments_id -- note that I called the table first then stated the column 
+
+# From here, we go back to the basics - which table are you calling FROM -- employees 
+
+# what are you SELECTING?  - remember name of table.column 
+
+SELECT employees.first_name, employees.last_name, departments.deparment_name
+FROM employees 
+JOIN departments ON employees.deparments_id = departments.departments_id;
+
+
+# there you just created two tables then joined them using a foreign key! 
+
+# Lets take a quick moment to talk about JOINs
+
+# INNER JOIN: Returns matching records from both tables. -- often simply referred to as JOIN since it is the default join type in SQL.
+# LEFT JOIN: Returns all records from the left table, and matching records from the right.
+# RIGHT JOIN: Returns all records from the right table, and matching records from the left.
+# FULL OUTER JOIN: Returns all records from both tables, matching where possible.
+
