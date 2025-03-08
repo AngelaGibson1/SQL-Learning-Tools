@@ -1,0 +1,133 @@
+# Selecting Data 
+
+# Let's say a company's HR department needs to retrieve all employee records to create an internal report.
+
+SELECT * 
+FROM employees;  -- Selects all (*) columns from the employees table
+
+# This first query will allow you to see all the columns from the table called employees. But lets say you're trying to be more specific and only need First and Last name columns 
+
+SELECT first_name, last_name  -- As you can see, we changed the select all, to just be the columns we needed from that table 
+FROM employees;  
+
+
+# Filtering Data
+
+# The HR team wants to find only emplyees who work in the Finance department 
+
+SELECT * 
+FROM employees
+WHERE department = 'Finance';
+
+# Quick quiz, what if we wanted just the last name column from the Finance department? 
+
+# Lets say HR now need employees who earn more than 50,000:
+
+SELECT *
+FROM employees 
+WHERE salary > 50000;
+
+# Pretty simple right? If HR wants to know the last name of employees making over 100,000 can you pull it? 
+
+
+#Sorting Data
+
+# The HR team needs a list of employees sorted alphabetically by last name to generate name tags for an event.
+
+Select * 
+FROM employees 
+ORDER BY last_name ASC; 
+
+# The HR team is asking for the last name of the highest paid employees first
+
+SELECT last_name
+FROM employees
+ORDER BY salary DESC;
+
+
+# Limiting Results
+
+# Now if these tables are too big, and you do not need to see all employees sometimes its best to limit the amount in a table 
+
+# HR wants to understand the top 10 highest payed employees by first and last name 
+
+SELECT first_name, last_name
+FROM employees
+ORDER BY salary DESC
+LIMIT 10;
+
+
+#Aggregating Data 
+
+# HR team needs to find out how many employees are in the company and the average salary
+
+SELECT COUNT(*) AS total_employees, AVG(salary) AS average_salary
+FROM employees 
+ORDER BY salary DESC;
+
+# COUNT gives us a total number of employees, AVG gives us the average for everything in the column for salary. 
+# You could also do SUM, MIN, MAX. To see total salaries combined, see the lowest and highest salary. 
+
+
+#Grouping Data 
+
+# The HR team wants to see average salaries by Department 
+
+SELECT department, AVG salary 
+FROM employees 
+GROUP BY department;
+
+
+# or lets say they want to know how many employees are in each deparment...
+
+SELECT department, COUNT(*) 
+FROM employees 
+GROUP BY department;
+
+#Filtering groups
+
+# The company wants to see only deparments where the average salary is above 60,000:
+
+SELECT departments, AVG(salary) AS avg_salary
+FROM employees 
+GROUP BY department 
+HAVING avg_salary > 60000;
+
+
+
+# this was just a quick intro - get you used to what querying looks like before really diving into more explanation. 
+
+# typically before working with any data you would know the data schema - Think of a data schema as a blueprint for a building—before you start constructing, you need to know where the rooms, doors, and windows will be placed. In the same way, before writing SQL queries, you need to understand the layout of your data.
+
+# In this example, our database has a TABLE called **employees**. Thats why we always said FROM employees. We were calling upon that specific table. The table contains the following columns, each holding a specific type of data
+
+# first_name: The employee’s first name. 
+# last_name: The employee’s last name.
+# department: The department where the employee works (e.g., Finance, IT, HR).
+# salary: The employee’s salary amount.
+
+
+
+
+# Using what you've learned, try writing SQL queries to answer these real-world questions:
+
+# Find all employees who work in the IT department.
+
+# Find the top 3 highest-paid employees in the company.
+
+# Show only departments where the average salary is greater than $80,000
+
+
+
+# After you're done take a break... let the information sit- Come back to it when you get some free time and review it again.  
+
+# Congrats you understand the basics to SQL -- this is a great place to start your computer science journey 
+
+
+# SQL serves as a foundational skill for understanding how to communicate with a computer by following structured rules. 
+# Once you've mastered gathering and manipulating data with SQL, you can expand your knowledge into more advanced programming languages like Python, which opens the door to automation, data analysis, and machine learning.
+
+
+
+
+
