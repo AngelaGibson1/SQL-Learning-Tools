@@ -1,0 +1,85 @@
+# Create the tables 
+
+CREATE TABLE employees (
+  employee_id INT PRIMARY KEY,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  department VARCHAR(50),
+  salary DECIMAL(10,2),
+  manager_id INT  -- references employee_id
+);
+
+
+
+CREATE TABLE departments (
+  department_id INT PRIMARY KEY,
+  department_name VARCHAR(50)
+);
+
+CREATE TABLE sales (
+  sale_id INT PRIMARY KEY,
+  employee_id INT,
+  amount DECIMAL(10,2),
+  sale_date DATE
+);
+
+
+# Unlike aggregate functions that collapse multiple rows into one, window functions operate across a subset of rows while preserving individual rows. They allow for ranking, running totals, and moving averages.
+
+# Key Window Functions:
+
+  # RANK() – Assigns a unique rank to each row within a partition.
+
+  # DENSE_RANK() – Similar to RANK() but without gaps between ranks.
+
+  # ROW_NUMBER() – Assigns a unique row number to each row.
+
+  # LAG() & LEAD() – Fetch previous or next row values.
+
+  # SUM() OVER() – Running totals within partitions.
+
+SELECT first_name, last_name, department, salary,
+       RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank
+FROM employees;
+
+
+# Recursive queries help retrieve hierarchical data, such as organizational charts or directory structures.
+
+# HR wants to find all employees reporting up to a specific manager.
+
+
+WITH RECURSIVE EmployeeHierarchy AS (
+    SELECT employee_id, first_name, last_name, manager_id
+    FROM employees
+    WHERE manager_id IS NULL  -- Start with top-level managers
+    
+    UNION ALL
+    
+    SELECT e.employee_id, e.first_name, e.last_name, e.manager_id
+    FROM employees e
+    INNER JOIN EmployeeHierarchy eh ON e.manager_id = eh.employee_id
+)
+SELECT * FROM EmployeeHierarchy;
+
+# Beyond INNER and OUTER joins, SQL offers more complex join operations.
+
+# Find employees who work in the same department as their colleagues.
+
+SELECT e1.first_name AS employee, e2.first_name AS colleague, e1.department
+FROM employees e1
+JOIN employees e2 ON e1.department = e2.department AND e1.employee_id != e2.employee_id;
+
+# A stored procedure is a reusable block of SQL code that can be executed with parameters, making queries more efficient. 
+
+CREATE PROCEDURE GetEmployeesBySalary (IN min_salary DECIMAL, IN max_salary DECIMAL)
+BEGIN
+    SELECT first_name, last_name, salary FROM employees
+    WHERE salary BETWEEN min_salary AND max_salary;
+END;
+
+CALL GetEmployeesBySalary(50000, 100000);
+
+
+# If you made it this far, check out this full tutorial! Goes into window functions 
+# https://www.youtube.com/watch?v=dQ7l9k7A_nY
+
